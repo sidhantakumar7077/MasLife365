@@ -143,7 +143,7 @@ const Index = props => {
                       style={styles.gradient}
                     />
                     <View style={{ backgroundColor: '#000' }}>
-                      <TouchableOpacity style={styles.watchBtn} onPress={() => props.navigation.navigate('Content_details_2', item.contentId)}>
+                      <TouchableOpacity style={styles.watchBtn} onPress={() => props.navigation.navigate('Content_details_2', item.content_id)}>
                         <FontAwesome5 name="play" size={14} color={'#fff'} />
                         <Text style={{ color: '#ffffff', fontSize: 17, fontFamily: 'Montserrat-Bold', marginLeft: 8, }}>Watch</Text>
                       </TouchableOpacity>
@@ -219,7 +219,7 @@ const Index = props => {
                             renderItem={content => {
                               return (
                                 <View style={{ marginRight: 7, marginVertical: 5, width: 115, marginTop: 9, }}>
-                                  <TouchableHighlight onPress={() => props.navigation.navigate('Content_details_2', content.item.id)} style={{ height: 170, width: '100%' }}>
+                                  <TouchableHighlight onPress={() => props.navigation.navigate('Content_details_2', content.item.content_type === "multipart" ? content.item.latest_content_id : content.item.id)} style={{ height: 170, width: '100%' }}>
                                     {content.item.vertical_poster_path ?
                                       <Image style={styles.smallContent} source={{ uri: content.item.vertical_poster_path + '/' + content.item.vertical_poster, }} />
                                       :
@@ -243,7 +243,7 @@ const Index = props => {
                             renderItem={content => {
                               return (
                                 <View style={{ marginRight: 7, marginVertical: 5, marginTop: 9, }}>
-                                  <TouchableOpacity onPress={() => props.navigation.navigate('Content_details_2', content.item.id)}>
+                                  <TouchableOpacity onPress={() => props.navigation.navigate('Content_details_2', content.item.content_type === "multipart" ? content.item.latest_content_id : content.item.id)}>
                                     {content.item.poster_path ?
                                       <Image style={styles.bigContent} source={{ uri: content.item.poster_path + '/' + content.item.poster, }} resizeMode="cover" />
                                       :
