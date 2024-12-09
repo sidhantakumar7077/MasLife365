@@ -61,7 +61,7 @@ const Index = props => {
             cvv: cvvCode
         };
 
-        console.log("Payment Data", props.route.params, formdata);
+        // console.log("Payment Data", props.route.params, formdata);
         // return;
 
         setIsLoading(true);

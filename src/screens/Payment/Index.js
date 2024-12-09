@@ -94,7 +94,7 @@ const Index = props => {
             setOrderModalVisible(true);
             setTimeout(() => {
               setOrderModalVisible(false);
-              navigation.replace('OrderDetails', response.data);
+              navigation.replace('OrderDetails', response.data.order.id);
               setIsLoading(false);
             }, 4000)
           } else {

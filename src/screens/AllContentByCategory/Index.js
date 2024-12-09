@@ -91,7 +91,7 @@ const Index = props => {
                 renderItem={content => {
                   return (
                     <View style={{ marginBottom: 15, width: '32%', marginHorizontal: 2.5, marginVertical: 5 }}>
-                      <TouchableOpacity onPress={() => props.navigation.navigate('Content_details_2', content.item.id)} style={{ height: 170, width: '100%' }}>
+                      <TouchableOpacity onPress={() => props.navigation.navigate('Content_details_2', content.item.content_type === "multipart" ? content.item.latest_content_id : content.item.id)} style={{ height: 170, width: '100%' }}>
                         {content.item.vertical_poster_path ?
                           <Image style={styles.smallContent} source={{ uri: content.item.vertical_poster_path + '/' + content.item.vertical_poster }} />
                           :

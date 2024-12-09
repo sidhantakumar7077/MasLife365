@@ -137,27 +137,45 @@ const Index = props => {
     setUser_id(user_detail?.user.id);
   };
 
+  const [contentIdForCart, setContentIdForCart] = useState(null);
   const [isCart, setIsCart] = useState("no");
   const [cartId, setCartId] = useState('');
 
   const addToCart = () => {
-    // const newCartStatus = isCart === 'true' ? 'false' : 'true';
-    setIsCart("yes");
-    try {
-      CallApi('POST', `/api/save-cart/${props.route.params}`).then(
-        response => {
-          if (response.status === 'success') {
-            // getDetails();
-            // console.log('send data');
-            setCartId(response.cart.id);
-            console.log('Add to Cart', response);
-          } else {
-            console.log('Add to Cart Error', response);
-          }
-        },
-      );
-    } catch (error) {
-      console.log(error);
+    if (contentIdForCart !== null) {
+      setIsCart("yes");
+      console.log("contentIdForCart", contentIdForCart);
+      try {
+        CallApi('POST', `/api/save-cart/${contentIdForCart}`).then(
+          response => {
+            if (response.status === 'success') {
+              setCartId(response.cart.id);
+              setContentIdForCart(null);
+              console.log('Add to Cart', response);
+            } else {
+              console.log('Add to Cart Error', response);
+            }
+          },
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("props.route.params", props.route.params);
+      try {
+        CallApi('POST', `/api/save-cart/${props.route.params}`).then(
+          response => {
+            if (response.status === 'success') {
+              setCartId(response.cart.id);
+              console.log('Add to Cart', response);
+            } else {
+              console.log('Add to Cart Error', response);
+            }
+          },
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -180,6 +198,37 @@ const Index = props => {
       console.log(error);
     }
   }
+
+  const calculateStreamingPeriod = (endDate) => {
+    if (!endDate) {
+      console.log("Invalid or missing endDate");
+      return "Invalid date";
+    }
+    // console.log("endDate", endDate);
+    // Ensure endDate is in a valid format for Date parsing
+    const formattedEndDate = endDate.replace(" ", "T");
+    const now = new Date();
+    const end = new Date(formattedEndDate);
+    const diff = end - now;
+    // console.log("calculateStreamingPeriod",end, now, diff, formattedEndDate )
+
+    if (isNaN(diff)) {
+      console.log("Invalid date format");
+      return "Invalid date";
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    // console.log("days: ", days, "hours: ", hours);
+    // Show only hours if days is 0
+    if (days === 0) {
+      return `${hours} hrs ${mins} mins`;
+    }
+
+    return `${days} days ${hours} hrs`;
+  };
 
   const [isFavourite, setIsFavourite] = useState('false');
   const addFavourite = async () => {
@@ -217,7 +266,7 @@ const Index = props => {
     try {
       setSpinner(true);
       CallApi('GET', url).then(res => {
-        console.log('Content Details', props.route.params, userlogin.user.id);
+        // console.log('Content Details', props.route.params, userlogin.user.id);
         // return;
         setpaymentId(res.section[0].contents.id);
         setContentDetails(res.section[0].contents);
@@ -265,6 +314,7 @@ const Index = props => {
   };
 
   const goToContentDetails = async id => {
+    setContentIdForCart(id);
     setIsVideoPlaying(false);
     setTrailerPlaying(false);
     console.log("episode id-=-=-=-=", id);
@@ -307,6 +357,7 @@ const Index = props => {
         setExclusive(res.section[0].exclusivevideos);
         setEpisodes(res.section[0].episodes);
         setIsFavourite(res.section[0].is_favorite);
+        setIsCart(res.section[0].iscart);
         setSpinner(false);
       });
     } catch (error) {
@@ -659,7 +710,10 @@ const Index = props => {
                           {/* <Text style={{ color: '#707070', marginLeft: 5 }}> |{' '} </Text> */}
                           <View style={{ width: '75%' }}>
                             {contentDetails?.ppv_duration != null &&
-                              <Text style={{ color: '#707070', fontSize: 15, marginLeft: 0, fontFamily: 'Roboto-Regular' }}> You have {contentDetails?.ppv_duration} Streaming Period </Text>
+                              isSubscribe === 'yes' ?
+                              <Text style={{ color: '#707070', fontSize: 15, marginLeft: 0, fontFamily: 'Roboto-Regular' }}>You have {calculateStreamingPeriod(contentDetails?.content_valid_till)} Streaming Period</Text>
+                              :
+                              <Text style={{ color: '#707070', fontSize: 15, marginLeft: 0, fontFamily: 'Roboto-Regular' }}>You have {contentDetails?.ppv_duration} Streaming Period</Text>
                             }
                           </View>
                         </View>
@@ -890,7 +944,8 @@ const Index = props => {
             </ScrollView>
           )}
         </>
-      )}
+      )
+      }
 
       <Modal
         isVisible={extraVideoModal}
@@ -992,7 +1047,7 @@ const Index = props => {
         </View>
       </Modal>
 
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
