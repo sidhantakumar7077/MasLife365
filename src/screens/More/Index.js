@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Index = props => {
 
   const [userEmailId, setUserEmailId] = useState(null);
+
   const getData = async () => {
     var ud_json = await AsyncStorage.getItem('user_details');
     const user_detail = JSON.parse(ud_json);
@@ -37,7 +38,7 @@ const Index = props => {
         </View>
       </View>
       <View style={{ backgroundColor: '#88888a', height: 0.4, width: '90%', alignSelf: 'center', marginTop: 13 }}></View>
-      <View style={{ marginTop: 20, width: '90%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
+      {/* <View style={{ marginTop: 20, width: '90%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <TouchableOpacity onPress={() => props.navigation.navigate('Surprises')} style={styles.box}>
           <AntDesign name="gift" color={'#88888a'} size={32} />
           <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Surprise</Text>
@@ -50,15 +51,12 @@ const Index = props => {
           <AntDesign name="wechat" color={'#88888a'} size={35} />
           <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Language</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={{ marginTop: 6, width: '90%', alignSelf: 'center', flexDirection: 'row', padding: 5 }}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Setting')} style={styles.box}>
-          <AntDesign name="setting" color={'#88888a'} size={32} />
-          <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Setting</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Download')} style={[styles.box, { marginLeft: 14 }]}>
-          <FontAwesome name="download" color={'#88888a'} size={32} />
-          <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Download</Text>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Profile')} style={styles.box}>
+          {/* <AntDesign name="setting" color={'#88888a'} size={32} /> */}
+          <Octicons name="person" color={'#88888a'} size={32} />
+          <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Account</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate('AllOrders')} style={[styles.box, { marginLeft: 14 }]}>
           <Octicons name="package" color={'#88888a'} size={33} />

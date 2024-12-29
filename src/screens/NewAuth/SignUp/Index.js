@@ -1,24 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {CallApi} from '../../../component/CallApi/index';
-import {useNavigation} from '@react-navigation/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { CallApi } from '../../../component/CallApi/index';
+import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CardView from 'react-native-cardview';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const Index = props => {
+const Index = ({ setChecked }) => {
+
   const navigation = useNavigation();
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState('');
@@ -27,6 +17,7 @@ const Index = props => {
   const [password, setPassword] = useState('');
   const [password_confirmation, setPassword_confirmation] = useState('');
   const [phone, setPhone] = useState('');
+
   const CreateUser = () => {
     const formdata = new FormData();
     formdata.append('name', name);
@@ -85,9 +76,9 @@ const Index = props => {
                 <FontAwesome onPress={() => props.navigation.goBack()} name="angle-left" color={'#b6b6b6'} size={28} />
             </View>
             <View style={{ backgroundColor: '#88888a', height: 0.4, marginHorizontal: 10 }}></View> */}
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{alignItems: 'center'}}>
-            <View style={{alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text
                 style={{
                   color: '#efefef',
@@ -105,14 +96,14 @@ const Index = props => {
                 Create Your MasLife365 Account
               </Text>
             </View>
-            <View style={{alignItems: 'center', width: '100%', marginTop: 28}}>
+            <View style={{ alignItems: 'center', width: '100%', marginTop: 28 }}>
               <CardView
                 style={styles.cardStyle}
                 cardElevation={5}
                 cardMaxElevation={2}
                 cornerRadius={10}>
                 <AntDesign
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                   name="user"
                   size={20}
                   color={'#88888a'}
@@ -134,7 +125,7 @@ const Index = props => {
                 cardMaxElevation={2}
                 cornerRadius={10}>
                 <AntDesign
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                   name="phone"
                   size={20}
                   color={'#88888a'}
@@ -157,7 +148,7 @@ const Index = props => {
                 cardMaxElevation={2}
                 cornerRadius={10}>
                 <Fontisto
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                   name="email"
                   size={20}
                   color={'#88888a'}
@@ -180,7 +171,7 @@ const Index = props => {
                 cardMaxElevation={2}
                 cornerRadius={10}>
                 <MaterialIcons
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                   name="lock-outline"
                   size={20}
                   color={'#88888a'}
@@ -203,7 +194,7 @@ const Index = props => {
                 cardMaxElevation={2}
                 cornerRadius={10}>
                 <MaterialIcons
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                   name="lock-outline"
                   size={20}
                   color={'#88888a'}
@@ -230,7 +221,7 @@ const Index = props => {
                   CREATE ACCOUNT
                 </Text>
               </TouchableOpacity>
-              <View
+              {/* <View
                 style={{
                   marginTop: 18,
                   width: '100%',
@@ -318,23 +309,10 @@ const Index = props => {
                     Google
                   </Text>
                 </TouchableOpacity>
-              </View>
-              <Text
-                style={{
-                  color: '#aaabad',
-                  fontSize: 17,
-                  fontFamily: 'Roboto-Regular',
-                  marginTop: 20,
-                }}>
+              </View> */}
+              <Text style={{ color: '#aaabad', fontSize: 17, fontFamily: 'Roboto-Regular', marginTop: 25 }}>
                 Already have an account?{' '}
-                <Text
-                  style={{
-                    color: '#c70e17',
-                    fontSize: 19,
-                    fontFamily: 'Roboto-Bold',
-                  }}>
-                  Sign in
-                </Text>
+                <Text onPress={() => setChecked('Login')} style={{ color: '#c70e17', fontSize: 19, fontFamily: 'Roboto-Bold' }}>Sign in</Text>
               </Text>
             </View>
           </View>

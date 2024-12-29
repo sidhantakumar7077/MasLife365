@@ -7,18 +7,16 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CallApi} from '../../../component/CallApi/index';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { CallApi } from '../../../component/CallApi/index';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CardView from 'react-native-cardview';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-const Index = props => {
+const Index = ({ setChecked }) => {
+
   const navigation = useNavigation();
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState('');
@@ -71,9 +69,9 @@ const Index = props => {
         <FontAwesome onPress={() => props.navigation.goBack()} name="angle-left" color={'#b6b6b6'} size={28} />
       </View>
       <View style={{ backgroundColor: '#88888a', height: 0.4, marginHorizontal: 10 }}></View> */}
-      <View style={{flex: 1, marginTop: 40}}>
-        <View style={{alignItems: 'center'}}>
-          <View style={{alignItems: 'center'}}>
+      <View style={{ flex: 1, marginTop: 40 }}>
+        <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center' }}>
             <Text
               style={{
                 color: '#efefef',
@@ -91,14 +89,14 @@ const Index = props => {
               Sign in
             </Text>
           </View>
-          <View style={{alignItems: 'center', width: '100%', marginTop: 28}}>
+          <View style={{ alignItems: 'center', width: '100%', marginTop: 28 }}>
             <CardView
               style={styles.cardStyle}
               cardElevation={5}
               cardMaxElevation={2}
               cornerRadius={10}>
               <Fontisto
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
                 name="email"
                 size={20}
                 color={'#88888a'}
@@ -121,7 +119,7 @@ const Index = props => {
               cardMaxElevation={2}
               cornerRadius={10}>
               <MaterialIcons
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
                 name="lock-outline"
                 size={20}
                 color={'#88888a'}
@@ -140,7 +138,7 @@ const Index = props => {
             </CardView>
             <TouchableOpacity
               onPress={forgot_password}
-              style={{alignSelf: 'flex-end'}}>
+              style={{ alignSelf: 'flex-end' }}>
               <Text
                 style={{
                   color: '#88888a',
@@ -160,7 +158,7 @@ const Index = props => {
                 SIGN IN
               </Text>
             </TouchableOpacity>
-            <View
+            {/* <View
               style={{
                 marginTop: 18,
                 width: '100%',
@@ -248,23 +246,10 @@ const Index = props => {
                   Google
                 </Text>
               </TouchableOpacity>
-            </View>
-            <Text
-              style={{
-                color: '#88888a',
-                fontSize: 17,
-                fontFamily: 'Roboto-Regular',
-                marginTop: 20,
-              }}>
+            </View> */}
+            <Text style={{ color: '#88888a', fontSize: 17, fontFamily: 'Roboto-Regular', marginTop: 25 }}>
               Don't have an account?{' '}
-              <Text
-                style={{
-                  color: '#c70e17',
-                  fontSize: 19,
-                  fontFamily: 'Roboto-Bold',
-                }}>
-                Sign up
-              </Text>
+              <Text onPress={() => setChecked('Register')} style={{ color: '#c70e17', fontSize: 19, fontFamily: 'Roboto-Bold' }}> Sign up</Text>
             </Text>
           </View>
         </View>

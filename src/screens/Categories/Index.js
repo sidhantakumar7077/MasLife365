@@ -4,11 +4,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { STORE_ID, CallApi } from '../../component/CallApi/index';
 
 const Index = props => {
+
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [category, setCategory] = useState([]);
   const [spinner, setSpinner] = useState(false);
 
@@ -18,16 +20,19 @@ const Index = props => {
       CallApi('GET', '/api/getCategoryWithContent/' + STORE_ID).then(res => {
         setSpinner(false);
         setCategory(res.sections);
-        console.log("All Category---------", res.sections);
+        // console.log("All Category---------", res.sections[0].category);
       });
     } catch (error) {
       setSpinner(false);
       // console.log(error);
     }
   };
+  
   useEffect(() => {
-    getCategory();
-  }, []);
+    if (isFocused) {
+      getCategory();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,9 +97,9 @@ const Index = props => {
                             size={20}
                           />
                         </View>
-                        {/* <TouchableOpacity onPress={() => props.navigation.navigate('AllContentByCategory', element.item.id)}>
-                        <Text style={{ color: '#8f9491', fontSize: 17, fontWeight: '700' }}>View all</Text>
-                      </TouchableOpacity> */}
+                        <TouchableOpacity onPress={() => props.navigation.navigate('AllContentByCategory', element.item.category.id)}>
+                          <Text style={{ color: '#565657', fontSize: 16, fontFamily: 'Roboto-Regular', }}> View all </Text>
+                        </TouchableOpacity>
                       </View>
                       <FlatList
                         showsHorizontalScrollIndicator={false}

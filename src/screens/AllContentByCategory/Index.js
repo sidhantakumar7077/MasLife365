@@ -80,7 +80,7 @@ const Index = props => {
               <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600', fontFamily: 'Roboto-Regular' }}> {categoryDetails.name} </Text>
               <Entypo style={{ marginTop: 2 }} name="chevron-right" color={'red'} size={20} />
             </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: '92%', alignSelf: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', width: '92%', alignSelf: 'center' }}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={allContent}

@@ -15,16 +15,16 @@ import { STORE_ID, CallApi } from '../../component/CallApi/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import { RadioButton } from 'react-native-paper';
-import { getContentDetails } from '../../services/apiHandler';
+// import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+// import { RadioButton } from 'react-native-paper';
+// import { getContentDetails } from '../../services/apiHandler';
 import Video from 'react-native-video';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCD } from '../../redux/action/actionCD';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchCD } from '../../redux/action/actionCD';
 let { width: screenWidth } = Dimensions.get('window');
 let horizontalImageWidth = (screenWidth - 45) / 2;
-let verticalImageWidth = (screenWidth - 55) / 3;
+// let verticalImageWidth = (screenWidth - 55) / 3;
 
 const Index = props => {
   const [checked, setChecked] = React.useState('Related_extras');
