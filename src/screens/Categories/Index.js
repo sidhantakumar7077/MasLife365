@@ -27,7 +27,7 @@ const Index = props => {
       // console.log(error);
     }
   };
-  
+
   useEffect(() => {
     if (isFocused) {
       getCategory();
@@ -43,13 +43,7 @@ const Index = props => {
             <Text style={{ color: '#b6b6b6', fontSize: 18, marginLeft: 10 }}>Back</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            backgroundColor: '#88888a',
-            height: 0.3,
-            width: '90%',
-            alignSelf: 'center',
-          }}></View>
+        <View style={{ backgroundColor: '#88888a', height: 0.3, width: '90%', alignSelf: 'center' }}></View>
         <View style={{ margin: 15, flex: 1, width: '90%', alignSelf: 'center' }}>
           <Spinner
             indicatorStyle={{
@@ -103,7 +97,7 @@ const Index = props => {
                       </View>
                       <FlatList
                         showsHorizontalScrollIndicator={false}
-                        data={element.item.contents}
+                        data={element.item.contents.slice(0, 6)}
                         horizontal
                         keyExtractor={key => {
                           return key.id;

@@ -496,6 +496,13 @@ const Index = props => {
     return () => clearTimeout(timer);
   }, [clicked]);
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  // Maximum number of lines for the truncated view
+  const maxLines = 4;
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {!fullScreen && (
@@ -741,8 +748,22 @@ const Index = props => {
                   </View>
                   <View style={{ marginTop: 10 }}>
                     <Text style={{ color: '#b5b5b5', fontSize: 16, fontFamily: 'Roboto-Regular', marginVertical: 4 }}>Synopsis:</Text>
-                    <Text style={{ color: '#5b5b5b', fontSize: 15, lineHeight: 20 }}> {contentDetails?.description?.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, '',)}</Text>
+                    <Text
+                      style={{ color: '#5b5b5b', fontSize: 15, lineHeight: 20 }}
+                      numberOfLines={isExpanded ? undefined : maxLines}
+                    >
+                      {contentDetails?.description?.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, '')}
+                    </Text>
+                    <TouchableOpacity onPress={toggleExpanded}>
+                      <Text style={{ color: '#FF0000', fontSize: 16, fontFamily: 'Roboto-Regular', marginVertical: 4 }}>
+                        {isExpanded ? 'Less...' : 'More...'}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
+                  {/* <View style={{ marginTop: 10 }}>
+                    <Text style={{ color: '#b5b5b5', fontSize: 16, fontFamily: 'Roboto-Regular', marginVertical: 4 }}>Synopsis:</Text>
+                    <Text style={{ color: '#5b5b5b', fontSize: 15, lineHeight: 20 }}> {contentDetails?.description?.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, '',)}</Text>
+                  </View> */}
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', backgroundColor: '#141416', marginVertical: 7 }}>
                   <TouchableOpacity style={checked === 'Related_extras' ? styles.activeTabBtm : styles.tabBtm} value="Related_extras" onPress={() => setChecked('Related_extras')}>

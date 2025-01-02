@@ -36,7 +36,7 @@ const Index = props => {
           <Text style={checked === 'Register' ? styles.activeTabBtmText : styles.tabBtmText}>Register</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, width: '90%', alignSelf: 'center' }}>
         {checked === 'Login' ? <SignIn setChecked={setChecked} /> : <SignUp setChecked={setChecked} />}
       </View>
     </SafeAreaView>
