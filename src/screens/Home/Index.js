@@ -143,7 +143,7 @@ const Index = props => {
                       style={styles.gradient}
                     />
                     <View style={{ backgroundColor: '#000' }}>
-                      <TouchableOpacity style={styles.watchBtn} onPress={() => props.navigation.navigate('Content_details_2', item.content_id)}>
+                      <TouchableOpacity style={styles.watchBtn} onPress={() => props.navigation.navigate('Content_details_2', item.content_type === "multipart" ? item.latest_content_id : item.id)}>
                         <FontAwesome5 name="play" size={14} color={'#fff'} />
                         <Text style={{ color: '#ffffff', fontSize: 17, fontFamily: 'Montserrat-Bold', marginLeft: 8, }}>Watch</Text>
                       </TouchableOpacity>

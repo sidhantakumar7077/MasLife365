@@ -82,7 +82,7 @@ const Index = props => {
           </TouchableOpacity> */}
         </View>
       </View>
-      {textData.length > 0 && contents.length > 0 ?
+      {textData?.length > 0 && contents?.length > 0 ?
         <View style={{ width: '93%', alignSelf: 'center', marginTop: 10 }}>
           <Text style={{ color: '#fff', fontSize: 16, fontFamily: 'Roboto-Regular', marginBottom: 8 }}>Search results...</Text>
           <ScrollView style={{}}>

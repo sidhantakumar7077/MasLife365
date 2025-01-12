@@ -1,6 +1,7 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Index = props => {
 
+  const navigation = useNavigation();
   const [userEmailId, setUserEmailId] = useState(null);
 
   const getData = async () => {
@@ -15,6 +17,18 @@ const Index = props => {
     const user_detail = JSON.parse(ud_json);
     console.log('getToken', user_detail);
     setUserEmailId(user_detail.user.email);
+  };
+
+  const confirmLogout = () => {
+    AsyncStorage.removeItem('user_details');
+    navigation.replace('BottomNav');
+  };
+
+  const isLogout = () => {
+    Alert.alert('Confirm Logout', 'Are you sure you want to Logout ?', [
+      { text: 'cancel' },
+      { text: 'OK', onPress: confirmLogout },
+    ]);
   };
 
   useEffect(() => {
@@ -63,6 +77,11 @@ const Index = props => {
           <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>All Orders</Text>
         </TouchableOpacity>
       </View>
+      <View style={{ alignSelf: 'center', top: '55%' }}>
+        <TouchableOpacity onPress={isLogout} style={styles.logoutBtn}>
+          <Text style={{ color: '#88888a', fontFamily: 'Roboto-Regular', fontSize: 17 }}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -83,5 +102,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logoutBtn: {
+    borderWidth: 1,
+    borderColor: '#88888a',
+    paddingVertical: 6,
+    paddingHorizontal: 20,
+    borderRadius: 20,
   },
 });

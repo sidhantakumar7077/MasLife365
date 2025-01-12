@@ -5,23 +5,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORE_ID, CallApi, CallApiPost } from '../../component/CallApi/index';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Octicons from 'react-native-vector-icons/Octicons';
-// import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CardView from 'react-native-cardview';
 import { launchImageLibrary } from 'react-native-image-picker';
-import DatePicker from 'react-native-date-picker'
 import moment from 'moment';
 
 const Index = props => {
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(false);
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
-  const [dob, setDob] = useState(new Date());
-  const [dobOpen, setDobOpen] = useState(false);
+  const [phone, setPhone] = useState(new Date());
   const [imageSource, setImageSource] = useState(null);
   const [imageResponse, setImageResponse] = useState({});
 
@@ -56,11 +52,12 @@ const Index = props => {
       CallApi('GET', '/api/profile/' + userlogin.user.id).then(res => {
         const user_name = res.profile.name;
         const user_email = res.profile.email;
-        const user_dob = res.profile.dob;
+        const user_phone = res.profile.phone;
+        const user_image = res.profile.image;
         setName(user_name);
         setMail(user_email);
-        // setDob(user_dob);
-        setDob(new Date(user_dob));
+        setPhone(user_phone);
+        setImageSource(user_image);
         console.log('ProfileGet', res.profile);
         setSpinner(false);
       });
@@ -103,7 +100,7 @@ const Index = props => {
     const formdata = new FormData();
     formdata.append('name', name);
     formdata.append('email', mail);
-    formdata.append('dob', moment(dob).format("DD/MM/YYYY"));
+    formdata.append('phone', phone);
     if (imageResponse && imageResponse.assets) {
       formdata.append('image',
         {
@@ -220,35 +217,19 @@ const Index = props => {
             </CardView>
           </View>
           <View style={{ width: '100%' }}>
-            <Text style={{ color: '#b1b1b1', fontSize: 16, marginLeft: 8 }}>Date Of Birth</Text>
+            <Text style={{ color: '#b1b1b1', fontSize: 16, marginLeft: 8 }}>Phone Number</Text>
             <CardView style={styles.cardStyle} cardElevation={5} cardMaxElevation={2} cornerRadius={10}>
-              <TouchableOpacity onPress={() => setDobOpen(true)} style={{ width: '100%' }}>
-                <TextInput
-                  style={{ color: '#b6b6b6' }}
-                  type="text"
-                  value={dob ? moment(dob).format("DD/MM/YYYY") : ''}
-                  editable={false}
-                  placeholder="Enter Your Date Of Birth"
-                  placeholderTextColor="#b7b7c2"
-                  underlineColorAndroid="transparent"
-                />
-              </TouchableOpacity>
-            </CardView>
-            <View>
-              <DatePicker
-                modal
-                mode="date"
-                open={dobOpen}
-                date={dob}
-                onConfirm={(data) => {
-                  setDobOpen(false)
-                  setDob(data)
-                }}
-                onCancel={() => {
-                  setDobOpen(false);
-                }}
+              <TextInput
+                style={styles.inputs}
+                onChangeText={setPhone}
+                keyboardType= 'number-pad'
+                type="phone"
+                value={phone}
+                placeholder="Enter Your Phone Number"
+                placeholderTextColor="#b6b6b6"
+                underlineColorAndroid="transparent"
               />
-            </View>
+            </CardView>
           </View>
         </View>
       )}

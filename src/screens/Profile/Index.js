@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
@@ -18,17 +18,17 @@ const Index = props => {
   const [spinner, setSpinner] = useState(false);
   const [userId, setUserId] = useState('');
 
-  const confirmLogout = () => {
-    AsyncStorage.removeItem('user_details');
-    navigation.replace('BottomNav');
-  };
+  // const confirmLogout = () => {
+  //   AsyncStorage.removeItem('user_details');
+  //   navigation.replace('BottomNav');
+  // };
 
-  const isLogout = () => {
-    Alert.alert('Confirm Logout', 'Are you sure you want to Logout ?', [
-      { text: 'cancel' },
-      { text: 'OK', onPress: confirmLogout },
-    ]);
-  };
+  // const isLogout = () => {
+  //   Alert.alert('Confirm Logout', 'Are you sure you want to Logout ?', [
+  //     { text: 'cancel' },
+  //     { text: 'OK', onPress: confirmLogout },
+  //   ]);
+  // };
 
   const get_profile = async () => {
     var ud_json = await AsyncStorage.getItem('user_details');
@@ -79,7 +79,11 @@ const Index = props => {
           <View style={{ marginVertical: 20, alignItems: 'center' }}>
             <View style={styles.profileBorder}>
               <View style={styles.profileContainer}>
-                <Octicons name="person" style={styles.profileIcon} size={110} />
+                {data?.image ?
+                  <Image source={{ uri: data.image }} style={{ width: '100%', height: '100%', borderRadius: 90 }} />
+                  :
+                  <Octicons name="person" style={styles.profileIcon} size={110} />
+                }
               </View>
               <View style={styles.cameraBtm}>
                 <Ionicons name="camera-outline" style={{ color: '#fff' }} size={25} />
@@ -104,11 +108,15 @@ const Index = props => {
             <View style={{ marginTop: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
               <Text style={{ color: '#fff' }}>{data?.email}</Text>
             </View>
-            <View style={{ backgroundColor: '#88888a', height: 0.4, width: '100%', alignSelf: 'center', marginVertical: 15 }}></View>
-            <Text style={{ color: '#88888a', marginHorizontal: 5 }}>Date Of Birth</Text>
-            <View style={{ marginTop: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
-              <Text style={{ color: '#fff' }}>{moment(data?.dob).format("DD/MM/YYYY")}</Text>
-            </View>
+            {data?.phone &&
+              <>
+                <View style={{ backgroundColor: '#88888a', height: 0.4, width: '100%', alignSelf: 'center', marginVertical: 15 }}></View>
+                <Text style={{ color: '#88888a', marginHorizontal: 5 }}>Phone Number</Text>
+                <View style={{ marginTop: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                  <Text style={{ color: '#fff' }}>{data?.phone}</Text>
+                </View>
+              </>
+            }
             <View style={{ backgroundColor: '#88888a', height: 0.4, width: '100%', alignSelf: 'center', marginVertical: 15 }}></View>
             <Text style={{ color: '#88888a', marginHorizontal: 5 }}>Change Password</Text>
             <TouchableOpacity
@@ -118,10 +126,10 @@ const Index = props => {
             </TouchableOpacity>
             <View style={{ backgroundColor: '#88888a', height: 0.4, width: '100%', alignSelf: 'center', marginVertical: 15 }}></View>
             <View style={{ marginTop: 6, marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
-              <Text style={{ color: '#88888a' }}>Register <Text style={{ color: '#fff' }}>October 02, 2023</Text></Text>
-              <TouchableOpacity onPress={isLogout} style={styles.logoutBtn}>
+              <Text style={{ color: '#88888a' }}>Register <Text style={{ color: '#fff' }}>{moment(data?.created_at).format('LL')}</Text></Text>
+              {/* <TouchableOpacity onPress={isLogout} style={styles.logoutBtn}>
                 <Text style={{ color: '#88888a', fontFamily: 'Roboto-Regular' }}>Logout</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
