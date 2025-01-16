@@ -1,23 +1,23 @@
 import { SafeAreaView, StyleSheet, Text, View, ImageBackground, Dimensions, FlatList, TouchableOpacity, Image, ScrollView, TouchableHighlight, RefreshControl } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../../component/Header/Index';
-import CustomBanner from './CustomBanner';
+// import CustomBanner from './CustomBanner';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { FlatListSlider } from 'react-native-flatlist-slider';
+// import { FlatListSlider } from 'react-native-flatlist-slider';
 import LinearGradient from 'react-native-linear-gradient';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import bgImage from '../../assets/BgImage/bg2.jpg';
+// import EvilIcons from 'react-native-vector-icons/EvilIcons';
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// import AntDesign from 'react-native-vector-icons/AntDesign';
+// import bgImage from '../../assets/BgImage/bg2.jpg';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { STORE_ID, CallApi } from '../../component/CallApi/index';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let { width: screenWidth } = Dimensions.get('window');
-let horizontalImageWidth = (screenWidth - 32) / 2;
-let verticalImageWidth = (screenWidth - 42) / 3;
+// let horizontalImageWidth = (screenWidth - 32) / 2;
+// let verticalImageWidth = (screenWidth - 42) / 3;
 
 const Index = props => {
   const images = [];
@@ -143,7 +143,11 @@ const Index = props => {
                       style={styles.gradient}
                     />
                     <View style={{ backgroundColor: '#000' }}>
-                      <TouchableOpacity style={styles.watchBtn} onPress={() => props.navigation.navigate('Content_details_2', item.content_type === "multipart" ? item.latest_content_id : item.id)}>
+                      <TouchableOpacity
+                        style={styles.watchBtn}
+                        onPress={() => props.navigation.navigate('Content_details_2', item.content_type === "multipart" ? item.latest_content_id : item.id)}
+                      // onPress={() => console.log("object", item)}
+                      >
                         <FontAwesome5 name="play" size={14} color={'#fff'} />
                         <Text style={{ color: '#ffffff', fontSize: 17, fontFamily: 'Montserrat-Bold', marginLeft: 8, }}>Watch</Text>
                       </TouchableOpacity>

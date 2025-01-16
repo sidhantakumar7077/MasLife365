@@ -497,7 +497,7 @@ const Index = props => {
   }, [clicked]);
 
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   // Maximum number of lines for the truncated view
   const maxLines = 4;
   const toggleExpanded = () => {
@@ -942,30 +942,69 @@ const Index = props => {
                   </View>
                   :
                   <View style={{ flex: 1, backgroundColor: '#141416', paddingVertical: 10 }}>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Creator</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.creator}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Writer</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.writter}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Director</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.director}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Starring</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.starring}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Supporting Actors</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.supporting_actors}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Studios</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5, }}>{otherDetails?.studios}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.5, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Content Advisory</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.content_advisory}</Text>
-                    <View style={{ backgroundColor: '#535353', height: 0.5, marginVertical: 8 }}></View>
-                    <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Language</Text>
-                    <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.language}</Text>
-                    {/* <View style={{backgroundColor:'#aeb0af', height:0.5, marginVertical:8}}></View> */}
+                    {otherDetails?.creator &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Creator</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.creator}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.writter &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Writer</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.writter}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.director &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Director</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.director}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.starring &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Starring</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.starring}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.producer &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Producer</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.producer}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.supporting_actors &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Supporting Actors</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.supporting_actors}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.4, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.studios &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Studios</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5, }}>{otherDetails?.studios}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.5, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.content_advisory &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Content Advisory</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.content_advisory}</Text>
+                        <View style={{ backgroundColor: '#535353', height: 0.5, marginVertical: 8 }}></View>
+                      </>
+                    }
+                    {otherDetails?.language &&
+                      <>
+                        <Text style={{ color: '#a7a4a4', fontSize: 18, fontWeight: '600', marginBottom: 5 }}>Language</Text>
+                        <Text style={{ color: '#666666', fontSize: 15, fontWeight: '400', marginBottom: 5 }}>{otherDetails?.language}</Text>
+                        {/* <View style={{ backgroundColor: '#535353', height: 0.5, marginVertical: 8 }}></View> */}
+                      </>
+                    }
                   </View>
                 }
               </View>

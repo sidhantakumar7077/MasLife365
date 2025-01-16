@@ -110,7 +110,7 @@ const Index = props => {
         });
     }
 
-    // console.log("Edit Profile Data", imageResponse.assets[0].uri, "-=-=", imageResponse.assets[0].fileName, "-=-=", imageResponse.assets[0].type);
+    // console.log("Edit Profile Data", formdata);
     // return;
 
     var userlogin = await AsyncStorage.getItem('user_details');
@@ -130,7 +130,7 @@ const Index = props => {
         // console.log('response', response);
         if (response.status === "success") {
           navigation.replace('Profile');
-          // console.log('response-=-=', response.data);
+          // console.log('Update Profile Successfuly-=-=', response);
         } else {
           alert('Error');
           console.log('Eroror response', response);
