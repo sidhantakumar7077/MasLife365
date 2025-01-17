@@ -42,7 +42,7 @@ const Index = props => {
   });
   const format = (seconds) => {
     const duration = moment.duration(seconds, 'seconds');
-    return `${duration.minutes()}:${duration.seconds()}`;
+    return `${duration.hours()}:${duration.minutes()}:${duration.seconds()}`;
   };
   const [fullScreen, setFullScreen] = useState(false);
   const ref = useRef(null);

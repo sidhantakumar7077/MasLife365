@@ -28,8 +28,8 @@ const Index = (props) => {
                 Alert.alert("Validation Error", 'Please Enter Your Password');
                 return false;
             }
-            if (confirm_password === "") {
-                Alert.alert("Validation Error", 'Please Enter Your Confirm Password');
+            if (password !== confirm_password || confirm_password === "") {
+                Alert.alert("Validation Error", 'Password and Confirm Password does not match');
                 return false;
             }
 
