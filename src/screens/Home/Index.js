@@ -49,7 +49,7 @@ const Index = props => {
           id: item.id,
           contentId: item.content_id,
           Images: item.attached_url + '/' + item.image,
-          content_type: item.content_type,
+          content_type: item.latest_content_type,
           latest_content_id: item.latest_content_id,
         }));
         setBanner(image_list);
@@ -147,8 +147,8 @@ const Index = props => {
                     <View style={{ backgroundColor: '#000' }}>
                       <TouchableOpacity
                         style={styles.watchBtn}
-                        // onPress={() => props.navigation.navigate('Content_details_2', item.content_type === "multipart" ? item.latest_content_id : item.id)}
-                        onPress={() => console.log("object", item)}
+                        onPress={() => props.navigation.navigate('Content_details_2', item.content_type === "multipart" ? item.latest_content_id : item.contentId)}
+                      // onPress={() => console.log("object", item)}
                       >
                         <FontAwesome5 name="play" size={14} color={'#fff'} />
                         <Text style={{ color: '#ffffff', fontSize: 17, fontFamily: 'Montserrat-Bold', marginLeft: 8, }}>Watch</Text>
