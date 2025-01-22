@@ -200,35 +200,42 @@ const Index = props => {
   }
 
   const calculateStreamingPeriod = (endDate) => {
+    // console.log("Input endDate:", endDate);
+
     if (!endDate) {
       console.log("Invalid or missing endDate");
       return "Invalid date";
     }
-    // console.log("endDate", endDate);
-    // Ensure endDate is in a valid format for Date parsing
-    const formattedEndDate = endDate.replace(" ", "T");
-    const now = new Date();
-    const end = new Date(formattedEndDate);
-    const diff = end - now;
-    // console.log("calculateStreamingPeriod",end, now, diff, formattedEndDate )
 
-    if (isNaN(diff)) {
+    // Parse the endDate using moment
+    const end = moment(endDate, "YYYY-MM-DD HH:mm:ss", true); // Strict parsing for format
+    const now = moment();
+
+    if (!end.isValid()) {
       console.log("Invalid date format");
       return "Invalid date";
     }
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const diff = moment.duration(end.diff(now));
 
-    // console.log("days: ", days, "hours: ", hours);
-    // Show only hours if days is 0
-    if (days === 0) {
-      return `${hours} hrs ${mins} mins`;
+    if (diff.asMilliseconds() <= 0) {
+      return "End date has passed";
     }
 
-    return `${days} days ${hours} hrs`;
+    const days = Math.floor(diff.asDays());
+    const hours = diff.hours();
+    const mins = diff.minutes();
+
+    // Format the output string
+    if (days > 0) {
+      return `${days} days ${hours} hrs ${mins} mins`;
+    } else if (hours > 0) {
+      return `${hours} hrs ${mins} mins`;
+    } else {
+      return `${mins} mins`;
+    }
   };
+
 
   const [isFavourite, setIsFavourite] = useState('false');
   const addFavourite = async () => {
