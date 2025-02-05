@@ -748,10 +748,16 @@ const Index = props => {
                           <Text style={{ color: '#f6eff0', fontSize: 20, fontFamily: 'Roboto-Bold', marginLeft: 10 }}>Rent Now</Text>
                         </TouchableOpacity>
                       :
-                      <TouchableOpacity onPress={doLogin} style={styles.watchBtn}>
-                        <FontAwesome5 name="play" color={'#f6eff0'} size={20} />
-                        <Text style={{ color: '#f6eff0', fontSize: 20, fontFamily: 'Roboto-Bold', marginLeft: 10 }}>Rent Now</Text>
-                      </TouchableOpacity>
+                      contentDetails?.has_free_content === '1' ?
+                        <TouchableOpacity onPress={doLogin} style={styles.watchBtn}>
+                          <FontAwesome5 name="play" color={'#f6eff0'} size={20} />
+                          <Text style={{ color: '#f6eff0', fontSize: 20, fontFamily: 'Roboto-Bold', marginLeft: 10 }}>Play Now</Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity onPress={doLogin} style={styles.watchBtn}>
+                          <FontAwesome5 name="play" color={'#f6eff0'} size={20} />
+                          <Text style={{ color: '#f6eff0', fontSize: 20, fontFamily: 'Roboto-Bold', marginLeft: 10 }}>Rent Now</Text>
+                        </TouchableOpacity>
                       // contentDetails?.has_free_content === '1' ?
                       //   <TouchableOpacity onPress={() => setIsVideoPlaying(true)} style={styles.watchBtn}>
                       //     <FontAwesome5 name="play" color={'#f6eff0'} size={20} />
