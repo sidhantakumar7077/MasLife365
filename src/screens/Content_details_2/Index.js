@@ -712,16 +712,21 @@ const Index = props => {
                   </View>
                   <View style={{ marginTop: 15, width: '100%' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                      <AntDesign name="tag" color={'#7b7b7b'} size={20} />
+                      {isSubscribe === 'yes' ? null : <AntDesign name="tag" color={'#7b7b7b'} size={20} />}
                       {contentDetails?.ppv_price > 0 ?
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <View style={{ width: '20%' }}>
-                            <Text style={contentDetails?.has_offer === 'yes' ? styles.offerPrice : styles.price}> ${contentDetails?.ppv_price} </Text>
-                            {contentDetails?.has_offer === 'yes' && (
-                              <Text style={styles.price}> ${contentDetails?.offer_price} </Text>
-                            )}
-                          </View>
-                          <View style={{ backgroundColor: '#707070', height: 30, width: 1 }}></View>
+                          {isSubscribe === 'yes' ?
+                            null :
+                            <>
+                              <View style={{ width: '20%' }}>
+                                <Text style={contentDetails?.has_offer === 'yes' ? styles.offerPrice : styles.price}> ${contentDetails?.ppv_price} </Text>
+                                {contentDetails?.has_offer === 'yes' && (
+                                  <Text style={styles.price}> ${contentDetails?.offer_price} </Text>
+                                )}
+                              </View>
+                              <View style={{ backgroundColor: '#707070', height: 30, width: 1 }}></View>
+                            </>
+                          }
                           {/* <Text style={{ color: '#707070', marginLeft: 5 }}> |{' '} </Text> */}
                           <View style={{ width: '75%' }}>
                             {contentDetails?.ppv_duration != null &&
