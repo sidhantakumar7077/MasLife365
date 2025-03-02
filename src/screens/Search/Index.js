@@ -26,7 +26,7 @@ const Index = props => {
     try {
       CallApi('GET', `/api/search?q=${text}`).then(res => {
         setContents(res.contents);
-        // console.log('sidhanta', res.contents);
+        // console.log('Search Content-=-=', res.contents);
       });
     } catch (error) {
       console.log(error);

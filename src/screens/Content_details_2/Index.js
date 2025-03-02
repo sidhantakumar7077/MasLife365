@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, useWindowDimensions, Dimensions, SafeAreaView, Image, TouchableOpacity, ScrollView, TouchableHighlight, FlatList, StatusBar, BackHandler, Animated, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions, Dimensions, SafeAreaView, Image, TouchableOpacity, ScrollView, TouchableHighlight, FlatList, StatusBar, BackHandler, Animated, ActivityIndicator, Share } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import Orientation from 'react-native-orientation-locker';
 import LinearGradient from 'react-native-linear-gradient';
@@ -84,6 +84,26 @@ const Index = props => {
   const toggleView = () => {
     setIsActive(!isActive);
     setClicked(true);
+  };
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'Check out this amazing content! https://example.com',
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('Shared with activity type:', result.activityType);
+        } else {
+          console.log('Shared successfully');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('Share dismissed');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error.message);
+    }
   };
 
   const [allSeason, setAllSeason] = useState([]);
@@ -236,7 +256,6 @@ const Index = props => {
     }
   };
 
-
   const [isFavourite, setIsFavourite] = useState('false');
   const addFavourite = async () => {
     const newFavoriteStatus = isFavourite === 'true' ? 'false' : 'true';
@@ -317,7 +336,7 @@ const Index = props => {
   };
 
   const castDetails = id => {
-    navigation.replace('Cast_details', id);
+    navigation.navigate('Cast_details', id);
   };
 
   const goToContentDetails = async id => {
@@ -674,12 +693,17 @@ const Index = props => {
                         null
                         :
                         accessToken ? (
-                          isCart === "yes" ? (
+                          isCart === "yes" || cartId === contentDetails.id ? (
                             <View style={{ backgroundColor: '#2e2e30', marginRight: 8, borderRadius: 100, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
                               <Ionicons name="cart-sharp" color={'red'} size={24} />
                             </View>
                           ) : (
                             <TouchableOpacity onPress={addToCart} style={{ backgroundColor: '#2e2e30', marginRight: 8, borderRadius: 100, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
+                              {/* {cartId ?
+                                <Ionicons name="cart-sharp" color={'red'} size={24} />
+                                :
+                                <Ionicons name="cart-outline" color={'#8d8c8d'} size={24} />
+                              } */}
                               <Ionicons name="cart-outline" color={'#8d8c8d'} size={24} />
                             </TouchableOpacity>
                           )
@@ -705,7 +729,7 @@ const Index = props => {
                           <MaterialCommunityIcons name="heart-plus-outline" color={'#8d8c8d'} size={25} />
                         </TouchableOpacity>
                       )}
-                      <TouchableOpacity style={{ backgroundColor: '#2e2e30', borderRadius: 100, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
+                      <TouchableOpacity onPress={onShare} style={{ backgroundColor: '#2e2e30', borderRadius: 100, height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
                         <MaterialCommunityIcons name="share-outline" color={'#8d8c8d'} size={28} />
                       </TouchableOpacity>
                     </View>

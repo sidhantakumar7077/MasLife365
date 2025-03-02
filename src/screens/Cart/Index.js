@@ -10,51 +10,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 const Index = (props) => {
 
-  const data = [
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/16299635351678013989.jpg",
-      movie_name: "Payday",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/3814204951678014037.jpg",
-      movie_name: "PhoneSwap",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/1448320061673975340.jpg",
-      movie_name: "Misplaced 2023",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/12416418251678014095.jpg",
-      movie_name: "Stars",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/15677790761678014135.jpg",
-      movie_name: "Ayamma",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-    {
-      image: "https://rixosysdev.s3.ap-south-1.amazonaws.com/153/content/153/7128869751678014241.jpg",
-      movie_name: "Jsoken",
-      Streamed: "Streamed on Aug. 5, 2023",
-      price: "Rental Cost:$9.99",
-      time_period: "24 Hours Streaming Period"
-    },
-  ]
-
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [allCart, setAllCart] = useState([]);
@@ -99,10 +54,10 @@ const Index = (props) => {
     >
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
         <View style={{ backgroundColor: '#494a49', borderRadius: 20, width: '80%', paddingHorizontal: 20, paddingTop: 30, paddingBottom: 20 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Confirm Deletion</Text>
-          <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 30 }}>Are you sure you want to remove this content?</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 20, color: '#fff' }}>Confirm Deletion</Text>
+          <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 30, color: '#fff' }}>Are you sure you want to remove this content?</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <TouchableOpacity onPress={confirmDelete} style={{ backgroundColor: '#ff6347', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8, marginRight: 10 }}>
+            <TouchableOpacity onPress={confirmDelete} style={{ backgroundColor: '#e00024', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8, marginRight: 10 }}>
               <Text style={{ color: '#fff', fontSize: 16 }}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: '#808080', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8 }}>
@@ -123,7 +78,7 @@ const Index = (props) => {
       setSpinner(true);
       CallApi('GET', '/api/carts').then(res => {
         if (res.status === "success") {
-          console.log('All Cart-=-=-=', res.cart);
+          // console.log('All Cart-=-=-=', res.cart);
           setAllCart(res.cart);
           setSpinner(false);
         } else {
@@ -151,8 +106,12 @@ const Index = (props) => {
 
   const contentDetails = {
     price: calculateTotalPrice(),
-    name: "Multi content"
-  }
+    name: allCart.length > 1
+      ? `${allCart[0].content.name} + ${allCart.length - 1}`
+      : allCart.length === 1
+        ? allCart[0].content.name
+        : "No content"
+  };
 
   const handlePayment = () => {
     // console.log("Total Price", calculateTotalPrice());
@@ -190,6 +149,7 @@ const Index = (props) => {
         <View style={{ marginTop: 10, flex: 1 }}>
           {allCart.length > 0 ?
             <FlatList
+              style={{ marginBottom: 70 }}
               data={allCart}
               keyExtractor={(key) => {
                 return key.id

@@ -83,7 +83,7 @@ const Index = props => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ width: '90%', alignSelf: 'center' }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '15%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '25%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center' }}>
           <FontAwesome name="angle-left" color={'#b6b6b6'} size={28} />
           <Text style={{ color: '#b6b6b6', fontSize: 18, marginLeft: 10 }}>Back</Text>
         </TouchableOpacity>
@@ -124,7 +124,7 @@ const Index = props => {
                       <Image style={styles.smallContent} source={require('../../assets/Images/no_img.jpg')} />
                     }
                     {/* <Image style={styles.smallContent} source={{ uri: content.item.poster_path + '/' + content.item.poster, }} /> */}
-                    <TouchableOpacity onPress={() => remove_favorite(content.item.content_id)} style={{ backgroundColor: '#2e2e30', width: 30, borderRadius: 6, height: 30, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 5, right: 4 }}>
+                    <TouchableOpacity onPress={() => remove_favorite(content.item.content_id)} style={{ width: 30, borderRadius: 6, height: 30, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 5, right: 4 }}>
                       <AntDesign name="heart" color={'red'} size={25} style={{ alignSelf: 'center' }} />
                     </TouchableOpacity>
                   </View>

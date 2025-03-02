@@ -26,6 +26,28 @@ const Index = props => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleExpirationChange = (text) => {
+    // Remove any non-numeric characters
+    let cleaned = text.replace(/[^0-9]/g, '');
+
+    // Limit input to 6 characters (MMYYYY)
+    if (cleaned.length > 6) {
+      cleaned = cleaned.slice(0, 6);
+    }
+
+    let formattedText = cleaned;
+
+    // Format as MM/YY automatically
+    if (cleaned.length >= 2) {
+      formattedText = `${cleaned.slice(0, 2)}`;
+      if (cleaned.length > 2) {
+        formattedText += `/${cleaned.slice(2, 4)}`;
+      }
+    }
+
+    setExpiration(formattedText);
+  };
+
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -137,7 +159,6 @@ const Index = props => {
           <View style={{ height: '100%', width: 0.4, backgroundColor: '#88888a' }}></View>
           <View>
             <Text style={{ color: '#efefef', fontFamily: 'Roboto-Light', fontSize: 18 }}>${totalPrice}</Text>
-            <Text style={{ color: '#88888a', fontSize: 13 }}> 24 Hours Rental </Text>
           </View>
         </View>
         <View style={{ width: '90%', alignSelf: 'center', marginTop: 16 }}>
@@ -181,7 +202,7 @@ const Index = props => {
             <CardView
               style={{
                 backgroundColor: '#373739',
-                width: '54%',
+                width: '60%',
                 marginVertical: 10,
                 flexDirection: 'row',
                 paddingHorizontal: 10,
@@ -191,19 +212,18 @@ const Index = props => {
               cornerRadius={10}>
               <TextInput
                 style={styles.inputs}
-                onChangeText={setExpiration}
+                onChangeText={handleExpirationChange}
                 value={expiration}
-                type="Number"
-                // keyboardType=''
+                keyboardType="number-pad"
                 placeholder="Expiration (MM/YY)"
                 placeholderTextColor="#b6b6b6"
-                underlineColorAndroid="transparent"
+                maxLength={5} // Ensures MM/YY format
               />
             </CardView>
             <CardView
               style={{
                 backgroundColor: '#373739',
-                width: '44%',
+                width: '39%',
                 marginVertical: 10,
                 flexDirection: 'row',
                 paddingHorizontal: 10,
@@ -218,7 +238,7 @@ const Index = props => {
                 type="Number"
                 keyboardType='number-pad'
                 maxLength={3}
-                placeholder="CV Code"
+                placeholder="CVV Code"
                 placeholderTextColor="#b6b6b6"
                 underlineColorAndroid="transparent"
               />
@@ -255,7 +275,7 @@ const Index = props => {
               <Text style={{ color: '#efefef', fontFamily: 'Roboto-Light', fontSize: 22 }}>Total Due: </Text>
               <Text style={{ color: '#efefef', fontFamily: 'Roboto-Light', fontSize: 22 }}>${totalPrice}</Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
+            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
               <Text style={{ color: '#efefef', fontFamily: 'Roboto-Light', fontSize: 15 }}>Save this card</Text>
               <Switch
                 trackColor={{ false: '#767577', true: '#e00024' }}
@@ -264,7 +284,7 @@ const Index = props => {
                 onValueChange={toggleSwitch}
                 value={isEnabled}
               />
-            </View>
+            </View> */}
           </View>
           {isLoading ? (
             <ActivityIndicator size="large" color="#c80100" />
