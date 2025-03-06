@@ -26,6 +26,7 @@ const Index = props => {
   const navigation = useNavigation();
   const [spinner, setSpinner] = useState(false);
   const [appearances, setAppearances] = useState([]);
+  const [you_may_also_like, setYou_may_also_like] = useState([]);
   const [cast, setCast] = useState([]);
 
   const goToContentDetails = id => {
@@ -40,9 +41,10 @@ const Index = props => {
         '/api/cast-details/' + props.route.params + '/' + STORE_ID,
       ).then(res => {
         setAppearances(res.section[0].Contents);
+        setYou_may_also_like(res.section[0].you_may_like_this);
         setCast(res.section[0].Casts);
         setSpinner(false);
-        console.log('res.section[0].foryou---------', res.section[0].Casts);
+        console.log('res.section[0].foryou---------', res.section[0]);
       });
     } catch (error) {
       console.log(error);
@@ -135,7 +137,7 @@ const Index = props => {
                 <Text style={{ color: '#d1d1d1', fontSize: 17, fontFamily: 'Roboto-Regular', marginBottom: 5, }}> You May Also Like </Text>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
-                  data={appearances}
+                  data={you_may_also_like}
                   horizontal
                   keyExtractor={key => {
                     return key.id;
