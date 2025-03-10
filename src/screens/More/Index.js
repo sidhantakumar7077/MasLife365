@@ -2,7 +2,7 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } 
 import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -75,6 +75,10 @@ const Index = props => {
         <TouchableOpacity onPress={() => props.navigation.navigate('AllOrders')} style={[styles.box, { marginLeft: 14 }]}>
           <Octicons name="package" color={'#88888a'} size={33} />
           <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>All Orders</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Support')} style={[styles.box, { marginLeft: 14 }]}>
+          <MaterialIcons name="help-outline" color={'#88888a'} size={33} />
+          <Text style={{ color: '#b6b6b6', fontWeight: '700', marginTop: 10 }}>Support</Text>
         </TouchableOpacity>
       </View>
       <View style={{ alignSelf: 'center', top: '55%' }}>
