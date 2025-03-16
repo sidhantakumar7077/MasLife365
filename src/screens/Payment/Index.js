@@ -215,7 +215,7 @@ const Index = props => {
                 onChangeText={handleExpirationChange}
                 value={expiration}
                 keyboardType="number-pad"
-                placeholder="Expiration (MM/YY)"
+                placeholder="Expiry (MM/YY)"
                 placeholderTextColor="#b6b6b6"
                 maxLength={5} // Ensures MM/YY format
               />
