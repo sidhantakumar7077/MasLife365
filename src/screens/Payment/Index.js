@@ -139,7 +139,7 @@ const Index = props => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ width: '90%', alignSelf: 'center' }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '15%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '30%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center' }}>
           <FontAwesome name="angle-left" color={'#b6b6b6'} size={28} />
           <Text style={{ color: '#b6b6b6', fontSize: 18, marginLeft: 6 }}> Back </Text>
         </TouchableOpacity>
