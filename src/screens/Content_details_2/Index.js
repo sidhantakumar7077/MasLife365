@@ -294,6 +294,7 @@ const Index = props => {
       CallApi('GET', url).then(res => {
         // console.log('Content Details', props.route.params, userlogin.user.id);
         // return;
+        setContentIdForCart(res.section[0].contents.id);
         setpaymentId(res.section[0].contents.id);
         setContentDetails(res.section[0].contents);
         setOtherDetails(res.section[0].contents);
@@ -314,12 +315,14 @@ const Index = props => {
         // console.log('res', res.section[0].seasons);
         if (res.section[0].contents.content_type === "multipart") {
           if (res.section[0].iscontent_episode === 'yes') {
+            setContentIdForCart(res.section[0].episodecontent.id);
             setpaymentId(res.section[0].episodecontent.id);
             setContentDetails(res.section[0].episodecontent);
             setBanner(res.section[0].episodecontent.poster_path + "/" + res.section[0].episodecontent.poster);
             setVideoUrl(res?.section[0].episodecontent.video);
             setTrailerUrl(res?.section[0].episodecontent.trailer);
           } else {
+            setContentIdForCart(res.section[0].latest_episode.id);
             setpaymentId(res.section[0].latest_episode.id);
             setContentDetails(res.section[0].latest_episode);
             setBanner(res.section[0].latest_episode.poster_path + "/" + res.section[0].latest_episode.poster);

@@ -96,16 +96,25 @@ const Index = (props) => {
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
+
     allCart.forEach(item => {
       const { ppv_price, has_offer, offer_price } = item.content;
-      const price = has_offer === "yes" ? parseFloat(offer_price) : parseFloat(ppv_price);
-      totalPrice += price;
+
+      // Determine the price, considering null/undefined cases
+      let price = has_offer === "yes" ? parseFloat(offer_price) : parseFloat(ppv_price);
+
+      // Skip null, undefined, or NaN values
+      if (!isNaN(price) && price !== null && price !== undefined) {
+        totalPrice += price;
+      }
     });
+
     return totalPrice.toFixed(2);
-  }
+  };
 
   const contentDetails = {
     price: calculateTotalPrice(),
+    duration: allCart.length === 1 ? allCart[0].content.ppv_duration : null,
     name: allCart.length > 1
       ? `${allCart[0].content.name} + ${allCart.length - 1}`
       : allCart.length === 1
@@ -127,7 +136,7 @@ const Index = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ width: '90%', alignSelf: 'center', }}>
-        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '15%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: "flex-start", alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '30%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: "flex-start", alignItems: 'center' }}>
           <FontAwesome name="angle-left" color={'#b6b6b6'} size={28} />
           <Text style={{ color: '#b6b6b6', fontSize: 18, marginLeft: 10 }}>Back</Text>
         </TouchableOpacity>

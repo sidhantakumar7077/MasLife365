@@ -159,6 +159,7 @@ const Index = props => {
           <View style={{ height: '100%', width: 0.4, backgroundColor: '#88888a' }}></View>
           <View>
             <Text style={{ color: '#efefef', fontFamily: 'Roboto-Light', fontSize: 18 }}>${totalPrice}</Text>
+            {props.route.params.duration && <Text style={{ color: '#88888a', fontSize: 13 }}>{props.route.params.duration}</Text>}
           </View>
         </View>
         <View style={{ width: '90%', alignSelf: 'center', marginTop: 16 }}>
