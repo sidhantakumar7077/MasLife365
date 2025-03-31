@@ -39,6 +39,7 @@ import Payment from './src/screens/Payment/Index'
 import Single_content_payment from './src/screens/Single_content_payment/Index'
 import Support from './src/screens/Support/Index'
 import TicketCreatePage from './src/screens/TicketCreatePage/Index'
+import TicketContentPage from './src/screens/TicketContentPage/Index'
 
 const Stack = createNativeStackNavigator()
 
@@ -91,6 +92,7 @@ const App = () => {
         <Stack.Screen name="Single_content_payment" component={Single_content_payment} />
         <Stack.Screen name="Support" component={Support} />
         <Stack.Screen name="TicketCreatePage" component={TicketCreatePage} />
+        <Stack.Screen name="TicketContentPage" component={TicketContentPage} />
       </Stack.Navigator>
     </NavigationContainer>
 

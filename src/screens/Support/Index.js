@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 const tickets = [
     { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
@@ -16,6 +17,10 @@ const tickets = [
 ];
 
 const TicketListScreen = (props) => {
+
+    const navigation = useNavigation();
+    const isFocused = useIsFocused();
+
     return (
         <View style={{ flex: 1, backgroundColor: "#141416" }}>
             {/* Header with Back Button */}
@@ -42,7 +47,7 @@ const TicketListScreen = (props) => {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.ticketContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('TicketContentPage')} style={styles.ticketContainer}>
                             <Text style={styles.ticketMessage}>
                                 #{item.id} - {item.message}
                             </Text>
@@ -52,7 +57,7 @@ const TicketListScreen = (props) => {
                                     <Text style={styles.statusText}>{item.status}</Text>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                 />
             </View>

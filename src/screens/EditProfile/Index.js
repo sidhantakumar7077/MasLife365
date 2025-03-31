@@ -110,7 +110,7 @@ const Index = props => {
         });
     }
 
-    // console.log("Edit Profile Data", formdata);
+    // console.log("Edit Profile Data", formdata._parts[3]);
     // return;
 
     var userlogin = await AsyncStorage.getItem('user_details');
@@ -127,14 +127,14 @@ const Index = props => {
         return false;
       }
       CallApi('POST', `/api/update-profile/13`, formdata).then(response => {
-        // console.log('response', response);
-        if (response.status === "success") {
-          navigation.replace('Profile');
-          // console.log('Update Profile Successfuly-=-=', response);
-        } else {
-          alert('Error');
-          console.log('Eroror response', response);
-        }
+        console.log('response', response);
+        // if (response.status === "success") {
+        //   navigation.replace('Profile');
+        //   // console.log('Update Profile Successfuly-=-=', response);
+        // } else {
+        //   alert('Error');
+        //   console.log('Eroror response', response);
+        // }
       });
     } catch (error) {
       console.log('error-=-=', error);
