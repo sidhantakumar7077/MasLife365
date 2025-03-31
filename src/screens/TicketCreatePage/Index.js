@@ -1,11 +1,67 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, ToastAndroid, Platform  } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { CallApi } from '../../component/CallApi/index';
 
 const Index = (props) => {
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState(null);
+
+    const handleImagePick = () => {
+        launchImageLibrary({ mediaType: 'photo' }, (response) => {
+            if (response.assets && response.assets.length > 0) {
+                setImage(response.assets[0]);
+            }
+        });
+    };
+
+    const saveTicket = async () => {
+        try {
+            let userlogin = await AsyncStorage.getItem('user_details');
+            userlogin = JSON.parse(userlogin);
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('app', 'Android');
+            formData.append('priority', 'normal');
+            formData.append('type', 'Issue');
+
+            if (image && image.uri) {
+                formData.append('image', {
+                    uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+                    type: image.type || 'image/jpeg',
+                    name: image.fileName || `upload_${Date.now()}.jpg`
+                });
+            }
+
+            const response = await CallApi('POST', '/api/save-ticket', formData);
+
+            if (response?.message === 'Ticket created successfully!') {
+                console.log("✅ Ticket submitted:", response);
+                ToastAndroid.show("Ticket Created Successfully!", ToastAndroid.SHORT);
+                setTitle('');
+                setDescription('');
+                setImage(null);
+            } else {
+                const imageError = response?.errors?.image?.[0];
+                if (imageError) {
+                    ToastAndroid.show(`Image error: ${imageError}`, ToastAndroid.LONG);
+                } else {
+                    ToastAndroid.show("Something went wrong. Please try again.", ToastAndroid.LONG);
+                }
+                console.warn("⚠️ Unexpected response:", response);
+            }
+
+        } catch (error) {
+            console.error("❌ Ticket submission failed:", error);
+            ToastAndroid.show("Error submitting ticket. Please check your network.", ToastAndroid.LONG);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -18,7 +74,7 @@ const Index = (props) => {
             </View>
             <View style={{ backgroundColor: '#88888a', height: 0.3, width: '90%', alignSelf: 'center' }}></View>
 
-            <ScrollView style={{ width: '90%', flex: 1, alignSelf: 'center', marginTop: 30 }}>
+            <ScrollView style={{ width: '90%', flex: 1, alignSelf: 'center', marginTop: 30 }} showsVerticalScrollIndicator={false}>
                 {/* Title Field */}
                 <Text style={styles.label}>Title</Text>
                 <TextInput
@@ -41,12 +97,18 @@ const Index = (props) => {
                 />
 
                 {/* Add Image Button */}
-                <TouchableOpacity style={styles.addImageButton} disabled={true}>
+                <TouchableOpacity style={styles.addImageButton} onPress={handleImagePick}>
                     <Text style={styles.addImageText}>Add Image</Text>
                 </TouchableOpacity>
 
+                {image && (
+                    <View style={{ width: '100%', height: 250, marginBottom: 20 }}>
+                        <Image source={{ uri: image.uri }} style={{ flex: 1, borderRadius: 10, resizeMode: 'cover' }} />
+                    </View>
+                )}
+
                 {/* Submit Button */}
-                <TouchableOpacity style={styles.submitButton}>
+                <TouchableOpacity onPress={saveTicket} style={styles.submitButton}>
                     <Text style={styles.submitButtonText}>Submit Ticket</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -98,7 +160,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         alignItems: "center",
         marginTop: 30,
-        marginBottom: 60
+        marginBottom: 20
     },
     addImageText: {
         color: "#b6b6b6",
