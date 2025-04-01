@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, ToastAndroid, Platform  } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, ToastAndroid, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -12,9 +12,27 @@ const Index = (props) => {
     const [image, setImage] = useState(null);
 
     const handleImagePick = () => {
-        launchImageLibrary({ mediaType: 'photo' }, (response) => {
-            if (response.assets && response.assets.length > 0) {
+        const options = {
+            title: 'Select Image',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+                ToastAndroid.show("Image selection cancelled", ToastAndroid.SHORT);
+            } else if (response.error) {
+                console.error('ImagePicker Error: ', response.error);
+                ToastAndroid.show("Error selecting image", ToastAndroid.LONG);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                ToastAndroid.show("Custom button tapped", ToastAndroid.SHORT);
+            } else {
                 setImage(response.assets[0]);
+                console.log("Image selected:", response.assets[0]);
+                ToastAndroid.show("Image selected", ToastAndroid.SHORT);
             }
         });
     };
@@ -33,9 +51,10 @@ const Index = (props) => {
 
             if (image && image.uri) {
                 formData.append('image', {
-                    uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-                    type: image.type || 'image/jpeg',
-                    name: image.fileName || `upload_${Date.now()}.jpg`
+                    uri: image.uri,
+                    name: image.fileName,
+                    filename: image.fileName,
+                    type: image.type,
                 });
             }
 
@@ -47,6 +66,7 @@ const Index = (props) => {
                 setTitle('');
                 setDescription('');
                 setImage(null);
+                props.navigation.goBack();
             } else {
                 const imageError = response?.errors?.image?.[0];
                 if (imageError) {

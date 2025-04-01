@@ -5,19 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { CallApi } from '../../component/CallApi/index';
-
-const tickets = [
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Open", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Open", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Open", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Open", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-    { id: 15, status: "Closed", date: "Feb 11, 2025 8:30PM", message: "I am not able to watch the content, please help me on this asap." },
-];
+import moment from "moment";
 
 const TicketListScreen = (props) => {
 
@@ -82,6 +70,8 @@ const TicketListScreen = (props) => {
                     {/* All Tickets Header */}
                     <Text style={styles.allTicketsText}>All Tickets ({tickets.length})</Text>
 
+                    <View style={{ backgroundColor: '#88888a', height: 0.3, width: '100%' }}></View>
+
                     {/* Ticket List */}
                     {tickets.length > 0 ?
                         <FlatList
@@ -89,12 +79,12 @@ const TicketListScreen = (props) => {
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(_, index) => index.toString()}
                             renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => navigation.navigate('TicketContentPage')} style={styles.ticketContainer}>
+                                <TouchableOpacity onPress={() => navigation.navigate('TicketContentPage', item.id)} style={styles.ticketContainer}>
                                     <Text style={styles.ticketMessage}>
-                                        #{item.id} - {item.message}
+                                        #{item.id} - {item.title}
                                     </Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <Text style={styles.ticketDate}>{item.date}</Text>
+                                        <Text style={styles.ticketDate}>{moment(item.created_at).format("MMM DD, YYYY h:mm A")}</Text>
                                         <View style={[styles.statusBadge, item.status === "Open" ? styles.openBadge : styles.closedBadge]}>
                                             <Text style={styles.statusText}>{item.status}</Text>
                                         </View>
