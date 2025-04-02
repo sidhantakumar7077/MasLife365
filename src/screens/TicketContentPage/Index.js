@@ -1,92 +1,173 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+    ToastAndroid,
+    Image
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import moment from 'moment';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { CallApi } from '../../component/CallApi/index';
-import moment from "moment";
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Index = (props) => {
-
     const navigation = useNavigation();
     const isFocused = useIsFocused();
-    const [ticketId, setTicketId] = useState(props.route.params);
+
+    const [ticketId] = useState(props.route.params);
     const [spinner, setSpinner] = useState(false);
-    const [tickets, setTickets] = useState({});
+    const [ticket, setTicket] = useState(null);
+    const [replyText, setReplyText] = useState("");
+    const [showReplyBox, setShowReplyBox] = useState(false);
+    const [image, setImage] = useState(null);
 
     const getTickets = async () => {
-        var userlogin = await AsyncStorage.getItem('user_details');
-        userlogin = JSON.parse(userlogin);
         try {
             setSpinner(true);
-            CallApi('GET', '/api/get-ticket/' + ticketId).then(res => {
-                if (res.status == "success") {
-                    setTickets(res.ticket);
-                    setSpinner(false);
-                } else {
-                    console.log("Something went wrong", res);
-                }
-            });
+            const res = await CallApi('GET', '/api/get-ticket/' + ticketId);
+            if (res.status === "success") {
+                setTicket(res.ticket);
+            } else {
+                ToastAndroid.show("Failed to load ticket", ToastAndroid.SHORT);
+            }
+            setSpinner(false);
         } catch (error) {
             console.error(error);
+            setSpinner(false);
+        }
+    };
+
+    const handleSelectImage = () => {
+        launchImageLibrary({ mediaType: 'photo' }, (response) => {
+            if (!response.didCancel && !response.errorCode) {
+                const asset = response.assets[0];
+                setImage({
+                    uri: asset.uri,
+                    type: asset.type,
+                    fileName: asset.fileName
+                });
+            }
+        });
+    };
+
+    const saveReply = async () => {
+        if (!replyText.trim()) {
+            ToastAndroid.show("Please enter a message", ToastAndroid.SHORT);
+            return;
+        }
+
+        try {
+            setSpinner(true);
+            const formData = new FormData();
+            formData.append('notes', replyText);
+            if (image && image.uri) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.fileName || 'image.jpg',
+                    type: image.type || 'image/jpeg'
+                });
+            }
+
+            const response = await CallApi('POST', `/api/save-ticket-note/${ticketId}`, formData, true);
+
+            if (response?.status === "success") {
+                ToastAndroid.show("Reply sent!", ToastAndroid.SHORT);
+                setReplyText('');
+                setImage(null);
+                setShowReplyBox(false);
+                getTickets();
+            } else {
+                ToastAndroid.show("Failed to send reply", ToastAndroid.SHORT);
+            }
+
+            setSpinner(false);
+        } catch (error) {
+            console.error("Reply Error:", error);
+            ToastAndroid.show("Error sending reply", ToastAndroid.SHORT);
+            setSpinner(false);
         }
     };
 
     useEffect(() => {
-        if (isFocused) {
-            getTickets();
-        }
+        if (isFocused) getTickets();
     }, [isFocused]);
 
     return (
         <View style={{ flex: 1, backgroundColor: "#141416" }}>
-            {/* Header with Back Button */}
             <View style={{ width: '90%', alignSelf: 'center' }}>
-                <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ width: '30%', marginVertical: 7, marginTop: 18, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: 'row', marginTop: 18, alignItems: 'center' }}>
                     <FontAwesome name="angle-left" color={'#b6b6b6'} size={28} />
                     <Text style={{ color: '#b6b6b6', fontSize: 18, marginLeft: 10 }}>Back</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ backgroundColor: '#88888a', height: 0.4, width: '90%', alignSelf: 'center' }}></View>
-            {spinner === true ? (
-                <Spinner
-                    visible={spinner}
-                    animation="slide"
-                    color="#e00024"
-                    overlayColor="rgba(0, 0, 0, 0.25)"
-                    textContent={'Loading...'}
-                    textStyle={{ color: '#e00024' }}
-                />
+
+            <View style={{ backgroundColor: '#88888a', height: 0.4, width: '90%', alignSelf: 'center' }} />
+
+            {spinner ? (
+                <Spinner visible={spinner} color="#e00024" textContent={'Loading...'} textStyle={{ color: '#e00024' }} />
             ) : (
-                <ScrollView style={styles.scroll}>
-                    {/* User Queries */}
-                    <Text style={styles.userQueryBold}>{tickets?.title}</Text>
-                    <View style={{ backgroundColor: '#88888a', height: 0.5, width: '100%', alignSelf: 'center', marginBottom: 20 }}></View>
-                    <Text style={styles.userQuery}>{tickets?.description}</Text>
-                    <View style={{ backgroundColor: '#88888a', height: 0.5, width: '100%', alignSelf: 'center', marginBottom: 20 }}></View>
-                    {/* Support Reply */}
-                    <View style={styles.replyBlock}>
-                        <Text style={styles.replyTitle}>MasLife365 Support</Text>
-                        <Text style={styles.replyText}>This is demo reply from maslife365 support team will display here.</Text>
-                        <Text style={styles.replyTime}>Feb 11, 2025, 08:30PM</Text>
-                    </View>
-                    {/* User Reply */}
-                    <View style={styles.replyBlock1}>
-                        <Text style={styles.replyTitle}>Bhuvnesh</Text>
-                        <Text style={{ color: '#fff', fontSize: 16, fontFamily: 'Montserrat-Regular', marginBottom: 6, textAlign: 'right' }}>This is demo reply from user will display here.</Text>
-                        <Text style={styles.replyTime}>Feb 11, 2025, 08:30PM</Text>
-                    </View>
+                <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+                    <Text style={styles.userQueryBold}>{ticket?.title}</Text>
+                    <View style={{ backgroundColor: '#88888a', height: 0.5, marginBottom: 20 }} />
+                    <Text style={styles.userQuery}>{ticket?.description}</Text>
+                    <View style={{ backgroundColor: '#88888a', height: 0.5, marginBottom: 20 }} />
+
+                    {ticket?.ticket_note?.map((item, idx) => (
+                        <View key={idx} style={[styles.replyContainer, item.created_status === 'User' ? styles.userReply : styles.supportReply]}>
+                            <Text style={styles.replyTitle}>{item.created_status === 'User' ? 'You' : 'Support'}</Text>
+                            <Text style={styles.replyText}>{item.notes}</Text>
+                            {item.image && (
+                                <View style={styles.fileContainer}>
+                                    <View style={styles.fileLeft}>
+                                        <MaterialIcons name="insert-drive-file" size={30} color="#d1cfcf" />
+                                        <View style={{ marginLeft: 10 }}>
+                                            <Text style={styles.fileName}>Attachment</Text>
+                                            <Text style={styles.fileMeta}>Image • Download</Text>
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity>
+                                        <MaterialIcons name="arrow-circle-down" size={28} color="#d1cfcf" />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            <Text style={styles.replyTime}>{moment(item.created_at).format('MMM DD, YYYY, hh:mmA')}</Text>
+                        </View>
+                    ))}
+
+                    {showReplyBox && (
+                        <>
+                            <TextInput
+                                style={[styles.input, styles.textArea]}
+                                placeholder="Write your reply..."
+                                placeholderTextColor="#888"
+                                value={replyText}
+                                onChangeText={setReplyText}
+                                multiline
+                            />
+                            <TouchableOpacity style={styles.addImageButton} onPress={handleSelectImage}>
+                                <Text style={styles.addImageText}>Add Image</Text>
+                            </TouchableOpacity>
+                        </>
+                    )}
                 </ScrollView>
             )}
-            <TouchableOpacity style={styles.replyButton}>
-                <Text style={styles.replyButtonText}>Reply</Text>
+
+            <TouchableOpacity style={styles.replyButton} onPress={() => showReplyBox ? saveReply() : setShowReplyBox(true)}>
+                <Text style={styles.replyButtonText}>{showReplyBox ? "Send Reply" : "Reply"}</Text>
             </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 
-export default Index
+export default Index;
 
 const styles = StyleSheet.create({
     scroll: {
@@ -99,39 +180,94 @@ const styles = StyleSheet.create({
     userQueryBold: {
         color: "#fff",
         fontSize: 16,
-        fontFamily: 'Montserrat-Bold',
+        fontWeight: 'bold',
         marginBottom: 25,
     },
     userQuery: {
         color: "#fff",
         fontSize: 16,
-        fontFamily: 'Montserrat-Regular',
         marginBottom: 25,
     },
-    replyBlock: {
-        marginBottom: 30,
+    replyContainer: {
+        maxWidth: '80%',
+        marginBottom: 20,
+        padding: 10,
+        borderRadius: 6,
     },
-    replyBlock1: {
-        width: '80%',
+    supportReply: {
+        alignSelf: 'flex-start',
+    },
+    userReply: {
         alignSelf: 'flex-end',
         alignItems: 'flex-end',
+    },
+    fileContainer: {
+        backgroundColor: '#3d3d3d',
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    fileLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    fileName: {
+        color: '#fff',
+        fontSize: 14,
+        fontWeight: '600',
+        marginBottom: 2,
+    },
+    fileMeta: {
+        color: '#bfbdbd',
+        fontSize: 12,
     },
     replyTitle: {
         color: "#b6b6b6",
         fontSize: 14,
-        fontFamily: 'Montserrat-SemiBold',
+        fontWeight: '600',
         marginBottom: 5,
     },
     replyText: {
         color: "#fff",
         fontSize: 16,
-        fontFamily: 'Montserrat-Regular',
         marginBottom: 6,
     },
     replyTime: {
         color: "#b6b6b6",
-        fontSize: 14,
-        fontFamily: 'Montserrat-Regular',
+        fontSize: 12,
+        marginTop: 5,
+    },
+    input: {
+        marginTop: 30,
+        backgroundColor: "#222",
+        borderWidth: 0.16,
+        borderColor: '#b6b6b6',
+        color: "#fff",
+        borderRadius: 4,
+        padding: 12,
+        fontSize: 16,
+    },
+    textArea: {
+        height: 150,
+        textAlignVertical: "top",
+    },
+    addImageButton: {
+        width: 150,
+        backgroundColor: "#222",
+        borderWidth: 0.16,
+        borderColor: '#b6b6b6',
+        padding: 15,
+        borderRadius: 4,
+        alignItems: "center",
+        marginTop: 20,
+        marginBottom: 20
+    },
+    addImageText: {
+        color: "#b6b6b6",
+        fontSize: 16,
     },
     replyButton: {
         position: 'absolute',
@@ -146,6 +282,6 @@ const styles = StyleSheet.create({
     replyButtonText: {
         color: "#fff",
         fontSize: 16,
-        fontFamily: 'Montserrat-SemiBold'
+        fontWeight: '600'
     },
-})
+});
